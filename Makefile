@@ -9,6 +9,12 @@ endif
 
 default: diskUsage
 
+diskUsage: diskUsage.o color.o
+	${CXX} -o $@ $^ ${LDFLAGS}
+
+%.o: %.cpp
+	${CXX} -c -o $@ ${CXXFLAGS} $^
+
 clean:
-	rm -f diskUsage
+	rm -f diskUsage ./*.o
 
