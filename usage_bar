@@ -1,0 +1,28 @@
+#!/usr/bin/bash
+
+perc="${1}"
+perc="${perc%%%}"
+c_red="9"
+c_green="10"
+c_blue="12"
+c_brightwhite="15"
+width="${2-60}"
+hwidth=$(( (width * perc + 99) / 100))
+rwidth=$((width - hwidth))
+bar="========================================"
+bar="${bar}${bar}${bar}${bar}"
+bar="${bar}${bar}${bar}${bar}"
+
+echo -n "["
+if (( perc > 90 )); then
+	echo -n "$(tput setaf $c_red)"
+else
+	echo -n "$(tput setaf $c_blue)"
+fi
+echo -n "${bar}" | head -c${hwidth}
+echo -n "$(tput sgr0)"
+echo -n "$(tput setaf $c_brightwhite)"
+echo -n "${bar}" | head -c${rwidth}
+echo -n "$(tput sgr0)"
+echo -n "]"
+
