@@ -6,21 +6,50 @@ function pline() {
 	printf "%-16s %-16s%4s %5s %5s %5s" "$1" "$2" "$3" "$4" "$5" "$6"
 }
 
+c_red="9"
+c_green="10"
+c_blue="12"
+c_brightwhite="15"
+bar="========================================"
+bar="${bar}${bar}${bar}${bar}"
+bar="${bar}${bar}${bar}${bar}"
+
+blue="$(tput setaf $c_blue)"
+green="$(tput setaf $c_green)"
+red="$(tput setaf $c_red)"
+brightwhite="$(tput setaf $c_brightwhite)"
+c_reset="$(tput sgr0)"
+
+function usage_bar() {
+	perc="${1}"
+	perc="${perc%%%}"
+	width="${2-60}"
+	hwidth=$(( (width * perc + 99) / 100))
+	rwidth=$((width - hwidth))
+
+	#c="$c_blue"
+	c="$blue"
+	if (( perc > 90 )); then
+		#c="$c_red"
+		c="$red"
+	fi
+	#echo "[$(tput setaf $c)${bar:0:${hwidth}}$(tput sgr0)$(tput setaf $c_brightwhite)${bar:0:${rwidth}}$(tput sgr0)]"
+	echo "[${c}${bar:0:${hwidth}}${c_reset}${brightwhite}${bar:0:${rwidth}}${c_reset}]"
+}
+
 pline "Mount Point" "Device" "Size" "Used" "Free" "Use%"
 echo ""
 
 df -Hl -x fuse.ciopfs -x tmpfs -x devtmpfs \
 		--output=target,source,pcent,size,used,avail "$args" | tail -n+2 \
-		| tr -s ' ' | tr ' ' '\0' | sort | tr '\0' ' ' | while read -r line; do
-	tar="$(echo "$line" | cut -d' ' -f1)"
-	src="$(echo "$line" | cut -d' ' -f2)"
-	perc="$(echo "$line" | cut -d' ' -f3)"
-	size="$(echo "$line" | cut -d' ' -f4)"
-	used="$(echo "$line" | cut -d' ' -f5)"
-	avail="$(echo "$line" | cut -d' ' -f6)"
+		| tr -s ' ' | sort -k 1,1 | tr ' ' '\n' | while read -r tar; do
+	read -r src
+	read -r perc
+	read -r size
+	read -r used
+	read -r avail
 	pline "${tar}" "${src}" "${size}" "${used}" "${avail}" "${perc}"
 	echo -n "  "
 	usage_bar "$perc" 50
-	echo ""
 done
 
