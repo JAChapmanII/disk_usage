@@ -27,13 +27,10 @@ function usage_bar() {
 	hwidth=$(( (width * perc + 99) / 100))
 	rwidth=$((width - hwidth))
 
-	#c="$c_blue"
 	c="$blue"
 	if (( perc > 90 )); then
-		#c="$c_red"
 		c="$red"
 	fi
-	#echo "[$(tput setaf $c)${bar:0:${hwidth}}$(tput sgr0)$(tput setaf $c_brightwhite)${bar:0:${rwidth}}$(tput sgr0)]"
 	echo "[${c}${bar:0:${hwidth}}${c_reset}${brightwhite}${bar:0:${rwidth}}${c_reset}]"
 }
 
