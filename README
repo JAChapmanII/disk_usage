@@ -1,0 +1,18 @@
+disk_usage contains several implementations of colored disk usage displays
+
+disk_usage is the original bash script which uses output from `df` to get disk
+usage information. Originally it was written with an exorbitant amount of
+processes spawned per mount; it has since been rewritten to do as much as
+reasonably possible inside bash itself.
+
+diskUsage.cpp is a small experiment to see how fast we can do compared to the
+(now) relatively efficient pure-bash implementation.
+
+subproc_method also spawns df and processes its output just like the
+disk_usage bash script contained in this repo.
+
+syscall_method uses the C API for parsing the /proc/self/mounts information.
+
+By default diskUsage.cpp uses hardcoded escape sequences for color codes, so
+that the syscall_method will spawn no other processes.
+

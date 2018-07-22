@@ -11,6 +11,13 @@
 
 #include "color.hpp"
 
+void subproc_method(); // run df in a subproc to get usage details
+void syscall_method(); // parse /proc/self/mounts for usage details
+
+// simple wrapper around calling df in a subproc
+std::vector<std::string> df();
+
+
 // get a human readable size from a byte count
 std::string toHuman(long long bytes, bool si = false);
 
