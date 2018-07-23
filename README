@@ -16,3 +16,5 @@ syscall_method uses the C API for parsing the /proc/self/mounts information.
 By default diskUsage.cpp uses hardcoded escape sequences for color codes, so
 that the syscall_method will spawn no other processes.
 
+ex: https://jac2.net/img/disk_usage.png
+
